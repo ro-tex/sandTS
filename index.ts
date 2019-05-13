@@ -1,12 +1,40 @@
-interface IInt {
-  getVal(): string;
+interface Person {
+  firstName: string;
+  lastName: string;
 }
 
-function foo(): IInt {
-  return {
-    getVal() { return "hi from ts edited" }
-  };
+type Name = string;
+
+class Doctor implements Person {
+  public firstName: Name;
+  public lastName: Name;
+  public companion?: Person; // nullable
+  private numHearts: 1 | 2;
+
+  [key: string]: any; // allows additional fields
+
+  constructor(firstName: Name, lastName: Name, numHearts: 1 | 2) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.numHearts = numHearts;
+  }
 }
 
-let a: string = foo().getVal()
-console.log(a)
+let who = new Doctor("Doctor", "Who", 2);
+who.hasTardis = true;
+who.companion = null;
+
+let people: Person[] = [who];
+
+type MyTuple = [number, string];
+let tuple: MyTuple = [5, "two"];
+
+class Observable<T> {
+  constructor(public val: T) {}
+}
+
+let x: Observable<number> = new Observable(7);
+let y: Observable<Person>;
+let z = new Observable(who); // Observable<Doctor>
+
+

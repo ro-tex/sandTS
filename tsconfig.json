@@ -1,9 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "watch": true,
     "outDir": "./dist",
     "strict": true,
-    "esModuleInterop": true
-  }
+    "alwaysStrict": true, // what's the difference?
+    "esModuleInterop": true,
+    "noImplicitAny": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
