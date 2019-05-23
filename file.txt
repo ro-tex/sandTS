@@ -1,0 +1,1 @@
+🌎 As you can see, every chunk is an instance of a Buffer. The bigger the file, the more chunks we receive.
