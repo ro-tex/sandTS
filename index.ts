@@ -1,14 +1,14 @@
-interface Person {
+interface IPerson {
   firstName: string;
   lastName: string;
 }
 
 type Name = string;
 
-class Doctor implements Person {
+class Doctor implements IPerson {
   public firstName: Name;
   public lastName: Name;
-  public companion?: Person; // nullable
+  public companion?: IPerson; // nullable
   private numHearts: 1 | 2;
 
   [key: string]: any; // allows additional fields
@@ -22,9 +22,9 @@ class Doctor implements Person {
 
 let who = new Doctor("Doctor", "Who", 2);
 who.hasTardis = true;
-who.companion = null;
+who.companion = undefined;
 
-let people: Person[] = [who];
+let people: IPerson[] = [who];
 
 type MyTuple = [number, string];
 let tuple: MyTuple = [5, "two"];
@@ -34,7 +34,5 @@ class Observable<T> {
 }
 
 let x: Observable<number> = new Observable(7);
-let y: Observable<Person>;
+let y: Observable<IPerson>;
 let z = new Observable(who); // Observable<Doctor>
-
-
