@@ -1,9 +1,9 @@
 import * as fs from "fs";
-import { StringDecoder, NodeStringDecoder } from "string_decoder";
+import { StringDecoder } from "string_decoder";
 import { Readable } from "stream";
 
-const buffers = false;
-if (buffers) {
+const enableBuffers = false;
+if (enableBuffers) {
   const buffers = [
     Buffer.from("Hello "),
     Buffer.from([0b11110000, 0b10011111]),
@@ -22,7 +22,7 @@ if (buffers) {
 
   function buffer2string(
     buf: Buffer[],
-    stringDecoder: NodeStringDecoder | null = null
+    stringDecoder: StringDecoder | null = null
   ): string {
     stringDecoder = stringDecoder || new StringDecoder("utf8");
     let res: string[] = [];
@@ -36,27 +36,47 @@ if (buffers) {
   console.log(result1, result2, result3); // Hello 🌎 world! x3
 }
 
-const streams = true;
-if (streams) {
+const enableStreams = true;
+if (enableStreams) {
   // Reading from streams:
-  const stream = fs.createReadStream("./file.txt", {
+  const readStream = fs.createReadStream("./file.txt", {
     encoding: "utf8", // this turns the chunk from a Buffer (or object) to a String
     autoClose: true
   });
-
-  stream.on("data", chunk => {
-    console.log("> New chunk of data:", chunk.length);
+  // all readabel streams are "paused" by default until we attach a handler.
+  // we can switch them to "flowing" by calling stream.resume();
+  // we can also explicitly stream.pause() them and resume() when we want.
+  readStream.on("data", chunk => {
+    console.log(
+      "> New chunk: length %d, start '%s'...",
+      chunk.length,
+      chunk.substr(0, 17)
+    );
   });
-  stream.on("end", () => stream.close()); // we need this if we don't autoClose the stream
+  readStream.on("end", () => readStream.close()); // we need this if we don't autoClose the stream
 
-  // Writing to streams:
+  // Writing to a readable stream:
   const stream2 = new Readable();
-
   stream2.push("Hello");
   stream2.push("World!");
-  stream2.push(null); // signals that we're done sendig data
+  stream2.push(null); // signals that we're done sendig data. we NEED this!
 
   stream2.on("data", chunk => {
     console.log(chunk.toString());
+  });
+
+  const writeStream = fs.createWriteStream("./file_hello.txt");
+  writeStream.write("Hello world!", () => {
+    console.log("data written...");
+  });
+  writeStream.on("finish", () => {
+    console.log("All the data is transmitted");
+  });
+  writeStream.end(); // optional?
+
+  const r = fs.createReadStream("./file.txt");
+  const w = fs.createWriteStream("./file_out.txt");
+  r.on("data", chunk => {
+    w.write(chunk);
   });
 }
