@@ -43,10 +43,10 @@ if (enableStreams) {
     encoding: "utf8", // this turns the chunk from a Buffer (or object) to a String
     autoClose: true
   });
-  // all readabel streams are "paused" by default until we attach a handler.
+  // all readable streams are "paused" by default until we attach a handler.
   // we can switch them to "flowing" by calling stream.resume();
   // we can also explicitly stream.pause() them and resume() when we want.
-  readStream.on("data", chunk => {
+  readStream.on("data", (chunk: string) => {
     console.log(
       "> New chunk: length %d, start '%s'...",
       chunk.length,
@@ -59,7 +59,7 @@ if (enableStreams) {
   const stream2 = new Readable();
   stream2.push("Hello");
   stream2.push("World!");
-  stream2.push(null); // signals that we're done sendig data. we NEED this!
+  stream2.push(null); // signals that we're done sending data. we NEED this!
 
   stream2.on("data", chunk => {
     console.log(chunk.toString());

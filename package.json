@@ -1,22 +1,36 @@
 {
-  "name": "sandTS",
+  "name": "sand-ts",
   "version": "1.0.0",
   "main": "/dist/index.js",
   "scripts": {
-    "dev": "//concurrently \"tsc -w\" \"nodemon dist/server.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\"",
+    "test": "npm run test",
+    "build": "tsc -b",
+    "watch": "nodemon dist/index.js",
+    "watch-ts": "tsc -w",
+    "watch-test": "npm run test -- --watchAll",
+    "serve": "node dist/index.js",
+    "start": "npm run serve"
   },
   "author": "Ivaylo Novakov <inovakov@gmail.com>",
   "license": "MIT",
   "private": false,
   "keywords": [],
-  "devDependencies": {
-    "@types/node": "^12.0.0",
+  "dependencies": {},
+  "disabledDevDeps": {
     "eslint-config-cimpress-atsquad": "^1.0.67",
     "eslint-plugin-typescript": "^0.14.0",
     "ts-node": "^8.1.0",
-    "typescript": "^3.4.5",
     "typescript-eslint-parser": "^22.0.0"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "@types/node": "^14.0.5",
+    "concurrently": "^5.2.0",
+    "ts-loader": "^7.0.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "peerDependencies": {
+    "typescript": "^3.9.3"
+  }
 }
